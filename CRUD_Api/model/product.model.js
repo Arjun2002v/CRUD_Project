@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Name is required"],
+    required: [false, "Name is required"],
   },
   quantity: {
     type: Number,
-    required: true,
+    required: false,
   },
   price: {
     type: Number,
-    required: true,
+    required: false,
     default: 0,
   },
   images: {

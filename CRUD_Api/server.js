@@ -17,10 +17,20 @@ app.listen(3000, () => {
 app.get("/", (req, res) => {
   res.sendStatus(200);
 });
-app.post("/api/products", async (req, res) => {
+
+app.get("/api/product", async (req, res) => {
+  try {
+    const pro = await Product.find({});
+    res.status(200).json(pro);
+  } catch (error) {
+    res.status(500).json({ error: error.message }); // Use 500 for general server errors
+  }
+});
+
+app.post("/api/product", async (req, res) => {
   try {
     const product = await Product.create(req.body);
-    res.send(200).json(product);
+    res.send(202).json(product);
   } catch (error) {
     res.status(400).send(error.message);
   }
