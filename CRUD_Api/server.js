@@ -59,6 +59,8 @@ app.post("/api/product", async (req, res) => {
   }
 });
 
+//Update a specific product from the Id
+
 app.put("/api/product/:id", async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body);
@@ -69,7 +71,23 @@ app.put("/api/product/:id", async (req, res) => {
     const newProduct = await Product.findByIdAndUpdate(req.params.id);
     res.json(newProduct).send(202);
 
-    res.json(product).send(200);
+    res.json(product).sendStatus(200);
+  } catch (error) {
+    res.sendStatus(404).send(error.message);
+  }
+});
+
+//Delete a specific product from the Id
+
+app.delete("/api/product/:id", async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id, req.body);
+
+    if (!product) {
+      res.send({ error: "Product not found" });
+    }
+    const newProduct = await Product.findByIdAndDelete(req.params.id);
+    res.json(product).sendStatus(200);
   } catch (error) {
     res.send(404).send(error.message);
   }
