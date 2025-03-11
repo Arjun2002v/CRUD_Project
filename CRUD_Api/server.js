@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const Product = require("./model/product.model");
+const e = require("express");
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -55,6 +56,22 @@ app.post("/api/product", async (req, res) => {
   } catch (error) {
     // Send 400 Bad Request if there's an error with the input data
     res.status(400).send(error.message);
+  }
+});
+
+app.put("/api/product/:id", async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body);
+    if (!product) {
+      res.send({ error: "Product not found" });
+    }
+
+    const newProduct = await Product.findByIdAndUpdate(req.params.id);
+    res.json(newProduct).send(202);
+
+    res.json(product).send(200);
+  } catch (error) {
+    res.send(404).send(error.message);
   }
 });
 
