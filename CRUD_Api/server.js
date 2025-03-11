@@ -48,16 +48,7 @@ app.get("/api/product", async (req, res) => {
 });
 
 // Create a new product and save it to the database
-app.post("/api/product", async (req, res) => {
-  try {
-    const product = await Product.create(req.body);
-    // Incorrect usage of send(202), corrected to status(202).json(product)
-    res.status(202).json(product);
-  } catch (error) {
-    // Send 400 Bad Request if there's an error with the input data
-    res.status(400).send(error.message);
-  }
-});
+app.post("/api/product", );
 
 //Update a specific product from the Id
 
@@ -81,12 +72,12 @@ app.put("/api/product/:id", async (req, res) => {
 
 app.delete("/api/product/:id", async (req, res) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id, req.body);
+    const product = await Product.findByIdAndDelete(req.params.id);
 
     if (!product) {
       res.send({ error: "Product not found" });
     }
-    const newProduct = await Product.findByIdAndDelete(req.params.id);
+    const 
     res.json(product).sendStatus(200);
   } catch (error) {
     res.send(404).send(error.message);
