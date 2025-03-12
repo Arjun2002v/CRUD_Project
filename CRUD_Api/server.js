@@ -48,39 +48,40 @@ app.get("/api/product", async (req, res) => {
 });
 
 // Create a new product and save it to the database
-app.post("/api/product", );
+app.post("/api/product", async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //Update a specific product from the Id
-
 app.put("/api/product/:id", async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body);
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!product) {
-      res.send({ error: "Product not found" });
+      return res.status(404).json({ error: "Product not found" });
     }
-
-    const newProduct = await Product.findByIdAndUpdate(req.params.id);
-    res.json(newProduct).send(202);
-
-    res.json(product).sendStatus(200);
+    res.status(200).json(product);
   } catch (error) {
-    res.sendStatus(404).send(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 
 //Delete a specific product from the Id
-
 app.delete("/api/product/:id", async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
-
     if (!product) {
-      res.send({ error: "Product not found" });
+      return res.status(404).json({ error: "Product not found" });
     }
-    const 
-    res.json(product).sendStatus(200);
+    res.status(200).json(product);
   } catch (error) {
-    res.send(404).send(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 
